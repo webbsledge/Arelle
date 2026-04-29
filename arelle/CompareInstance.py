@@ -11,6 +11,7 @@ from arelle.ModelRelationshipSet import ModelRelationshipSet
 from arelle.ModelXbrl import ModelXbrl, load
 from arelle.XmlUtil import collapseWhitespace
 from arelle.typing import TypeGetText
+from arelle.ErrorManager import ErrorsType
 
 if TYPE_CHECKING:
     from arelle.ModelManager import ModelManager
@@ -99,7 +100,7 @@ def compareInstance(
         expectedInstanceUri: str,
         errorCaptureLevel: int,
         matchById: bool
-) -> list[str | None]:
+) -> ErrorsType:
     expectedInstance = load(modelManager,
                             expectedInstanceUri,
                             _("loading expected result XBRL instance"),

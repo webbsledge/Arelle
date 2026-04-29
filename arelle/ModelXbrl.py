@@ -16,7 +16,7 @@ from collections.abc import Iterable, Iterator
 
 import arelle
 from arelle import FileSource, ModelRelationshipSet, XmlUtil, ModelValue, XbrlConst, XmlValidate
-from arelle.ErrorManager import ErrorManager
+from arelle.ErrorManager import ErrorManager, ErrorsType
 from arelle.Locale import format_string
 from arelle.ModelObject import ModelObject
 from arelle.ModelValue import dateUnionEqual
@@ -1196,7 +1196,7 @@ class ModelXbrl:
             return self._qnameUtrUnits
 
     @property
-    def errors(self) -> list[str | None]:
+    def errors(self) -> ErrorsType:
         return self.errorManager.errors
 
     @property

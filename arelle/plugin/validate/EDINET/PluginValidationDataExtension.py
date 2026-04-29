@@ -325,7 +325,7 @@ class PluginValidationDataExtension(PluginData):
         manifestInstance = self.getManifestInstance(modelXbrl)
         if manifestInstance is None:
             return None
-        if any(e is not None and e.startswith('EDINET.EC5800E') for e in modelXbrl.errors):
+        if any(e is not None and e.startswith('EDINET.EC5800E') for e in modelXbrl.errors):  # type: ignore[union-attr]
             # Manifest TOC parsing failed, so cannot determine cover items.
             return None
         assert len(manifestInstance.tocItems) == 1, _("Only one TOC item should be associated with this instance.")
