@@ -208,7 +208,7 @@ class ModelManager:
         """
         try:
             if self.modelXbrl:
-                Validate.validate(self.modelXbrl)  # type: ignore[no-untyped-call]
+                Validate.validate(self.modelXbrl)
         except Exception as err:
             self.addToLog(_("[exception] Validation exception: {0} at {1}").format(
                            err,

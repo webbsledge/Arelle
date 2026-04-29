@@ -2107,7 +2107,7 @@ class CntlrCmdLine(Cntlr.Cntlr):
                             if options.formulaAction: # don't automatically run formulas
                                 modelXbrl.hasFormulae = False
                             from arelle import Validate
-                            Validate.validate(modelXbrl)  # type: ignore[no-untyped-call]
+                            Validate.validate(modelXbrl)
                             if options.formulaAction: # restore setting
                                 modelXbrl.hasFormulae = hasFormulae
                             self.addToLog(format_string(self.modelManager.locale,
