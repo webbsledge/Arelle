@@ -28,7 +28,7 @@ from arelle.utils.PluginHooks import ValidationHook
 from arelle.utils.validate.Characters import findProhibitedCharacters
 from arelle.utils.validate.Decorator import validation
 from arelle.utils.validate.Document import checkDocumentEncoding
-from arelle.utils.validate.Facts import isValidNonNilFact
+from arelle.utils.validate.Facts import isValidNonNilFact, iterValidNonNilFactsByQname
 from arelle.utils.validate.Validation import Validation
 from arelle.utils.validate.Common import isExtensionUri
 from arelle.utils.validate.ValidationUtil import hasPresentationalConceptsWithFacts
@@ -969,6 +969,40 @@ def rule_EC8036W(
             return
     yield Validation.warning(
         codes='EDINET.EC8036W',
+        msg=_('The consolidated business indicators, etc. have not been tagged in detail. '
+              'Please provide detailed tagging of the consolidated business indicators, etc. '
+              'If you do not provide consolidated business indicators, please confirm that '
+              'the "Consolidated Financial Statements" field in the DEI information is correct.'),
+    )
+
+
+@validation(
+    hook=ValidationHook.COMPLETE,
+    disclosureSystems=[DISCLOSURE_SYSTEM_EDINET],
+)
+def rule_EC8037W(
+        pluginData: ControllerPluginData,
+        cntlr: Cntlr,
+        fileSource: FileSource,
+        *args: Any,
+        **kwargs: Any,
+) -> Iterable[Validation]:
+    """
+    EDINET.EC8037W: The consolidated business indicators, etc. have not been detailed tagged.
+    If WhetherConsolidatedFinancialStatementsArePreparedDEI is false, there must be children of
+    the extended link role rol_BusinessResultsOfReportingCompany.
+    """
+    if not pluginData.hasDocumentType({DocumentType.ANNUAL_SECURITIES_REPORT, DocumentType.SEMI_ANNUAL_REPORT}):
+        return
+    statementsPrepared = pluginData.getDeiValue('WhetherConsolidatedFinancialStatementsArePreparedDEI')
+    if statementsPrepared != False:
+        return
+    roleUris = ('http://disclosure.edinet-fsa.go.jp/role/jpcrp/rol_BusinessResultsOfReportingCompany',)
+    for modelXbrl in pluginData.loadedModelXbrls:
+        if hasPresentationalConceptsWithFacts(modelXbrl, roleUris):
+            return
+    yield Validation.warning(
+        codes='EDINET.EC8037W',
         msg=_('The consolidated business indicators, etc. have not been tagged in detail. '
               'Please provide detailed tagging of the consolidated business indicators, etc. '
               'If you do not provide consolidated business indicators, please confirm that '
