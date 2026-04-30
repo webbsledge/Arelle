@@ -41,6 +41,7 @@ from arelle.typing import TypeGetText
 from arelle.utils.PluginData import PluginData
 from arelle.utils.validate.Validation import Validation
 from arelle.WebCache import ProxyTuple, WebCache
+from arelle.ErrorManager import ErrorsType
 
 _: TypeGetText
 
@@ -343,7 +344,7 @@ class Cntlr:
         )
 
     @property
-    def errors(self) -> list[str | None]:
+    def errors(self) -> ErrorsType:
         if self.errorManager is None:
             return []
         return self.errorManager.errors
