@@ -5,6 +5,7 @@ from __future__ import annotations
 
 import bisect
 import fnmatch
+import logging
 import os
 import time
 from typing import Any, Iterable
@@ -863,7 +864,7 @@ class Validate:
                 if isinstance(error,dict):
                     modelTestcaseVariation.actual.append(error)
 
-import logging
+
 class ValidationLogListener(logging.Handler):
     def __init__(self, logView: Any) -> None:
         self.logView = logView
