@@ -699,7 +699,7 @@ class ModelXbrl:
                     dimElt = XmlUtil.addChild(contextElt, XbrlConst.xbrldi, "xbrldi:typedMember",
                                               attributes=dimAttr)
                     if isinstance(dimValue, (arelle.ModelInstanceObject.ModelDimensionValue, DimValuePrototype)) and dimValue.isTyped and dimValue.typedMember is not None:
-                        XmlUtil.copyNodes(dimElt, cast(ModelObject, dimValue.typedMember))
+                        XmlUtil.copyNodes(dimElt, dimValue.typedMember)
                 elif dimMemberQname:
                     dimElt = XmlUtil.addChild(contextElt, XbrlConst.xbrldi, "xbrldi:explicitMember",
                                               attributes=dimAttr,
