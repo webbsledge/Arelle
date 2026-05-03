@@ -698,7 +698,7 @@ class ModelXbrl:
                 if cast('DimValuePrototype | ModelDimensionValue', dimValue).isTyped:  #Typing thinks that this can also be a QName
                     dimElt = XmlUtil.addChild(contextElt, XbrlConst.xbrldi, "xbrldi:typedMember",
                                               attributes=dimAttr)
-                    if isinstance(dimValue, (arelle.ModelInstanceObject.ModelDimensionValue, DimValuePrototype)) and dimValue.isTyped and dimValue.typedMember:
+                    if isinstance(dimValue, (arelle.ModelInstanceObject.ModelDimensionValue, DimValuePrototype)) and dimValue.isTyped and dimValue.typedMember is not None:
                         XmlUtil.copyNodes(dimElt, cast(ModelObject, dimValue.typedMember))
                 elif dimMemberQname:
                     dimElt = XmlUtil.addChild(contextElt, XbrlConst.xbrldi, "xbrldi:explicitMember",
@@ -866,7 +866,7 @@ class ModelXbrl:
                         fbdq[NONDEFAULT].add(fact) # set of all facts that have non-default value for dimension
                         if dimValue.isExplicit:
                             fbdq[dimValue.memberQname].add(fact) # set of facts that have this dim and mem
-                        elif dimValue.isTyped and dimValue.typedMember:
+                        elif dimValue.isTyped and dimValue.typedMember is not None:
                             fbdq[dimValue.typedMember.textValue].add(fact) # set of facts that have this dim and mem
                     else: # default typed dimension
                         fbdq[DEFAULT].add(fact)
