@@ -3,10 +3,9 @@ from __future__ import annotations
 import json
 import locale
 import os
-import urllib.parse
 from collections import Counter, defaultdict
 from pathlib import PurePath
-from typing import TYPE_CHECKING, cast, Any
+from typing import TYPE_CHECKING, Any, cast
 
 import boto3
 import pytest
@@ -15,10 +14,10 @@ from botocore import UNSIGNED
 from botocore.config import Config as BotocoreConfig
 
 from arelle import PackageManager, PluginManager
-from arelle.ModelDocumentType import ModelDocumentType
 from arelle.Cntlr import Cntlr
 from arelle.CntlrCmdLine import parseAndRun
 from arelle.FileSource import archiveFilenameParts
+from arelle.ModelDocumentType import ModelDocumentType
 
 if TYPE_CHECKING:
     from _pytest.mark import ParameterSet
@@ -70,14 +69,6 @@ def get_document_id(doc: ModelDocument) -> str:
 
 def get_document_id_from_basepath(doc: ModelDocument, basepath: str) -> str:
     return PurePath(doc.filepath).relative_to(basepath).as_posix()
-
-
-def get_s3_uri(path: str, version_id: str | None = None) -> str:
-    path = urllib.parse.quote(path)
-    uri = f'https://arelle-public.s3.amazonaws.com/{path}'
-    if version_id is not None:
-        uri += f'?versionId={version_id}'
-    return uri
 
 
 _S3_BASE_CONFIG = BotocoreConfig(
