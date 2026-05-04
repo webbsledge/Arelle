@@ -40,13 +40,12 @@ with zipfile.ZipFile(samples_zip_path, "r") as zip_ref:
 
 contents = ''
 port = 8100
-with run_arelle_webserver(arelle_command, port) as proc:
+with run_arelle_webserver(arelle_command, port, offline=arelle_offline) as proc:
     target_url = urllib.parse.quote_plus(str(target_path))
     url = f"http://localhost:{port}/rest/xbrl/{target_url}/open?media=xml"
     url += "&plugins=ixbrl-viewer"
     url += "&viewer_feature_review=true"
     url += f"&saveViewerDest={urllib.parse.quote_plus(str(viewer_path))}"
-    url += f"&internetConnectivity={'false' if arelle_offline else 'true'}"
     url += f"&logFile={urllib.parse.quote_plus(str(arelle_log_file))}"
     print(f"Generating IXBRL viewer: {url}")
     contents = urllib.request.urlopen(url).read()
